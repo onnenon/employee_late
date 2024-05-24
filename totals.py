@@ -24,7 +24,7 @@ def get_current_total_df():
         return pd.DataFrame(columns=["id", "name", "count"])
 
 
-def merge_exception_counts_for_id(
+def merge_exception_counts_by_id(
     current_total_df: pd.DataFrame, summed_employee_df: pd.DataFrame
 ) -> pd.DataFrame:
     """
@@ -51,7 +51,7 @@ def merge_exception_counts_for_id(
     )
 
 
-def sum_exceptions_for_id(
+def sum_exceptions_by_id(
     incoming_df: pd.DataFrame, exception_name: str
 ) -> pd.DataFrame:
     """
@@ -86,8 +86,8 @@ def main():
 
     running_total_df = get_current_total_df()
 
-    summed_diff = sum_exceptions_for_id(incoming_unfiltered_df, EXCEPTION_TO_COUNT)
-    merged_df = merge_exception_counts_for_id(running_total_df, summed_diff)
+    summed_diff = sum_exceptions_by_id(incoming_unfiltered_df, EXCEPTION_TO_COUNT)
+    merged_df = merge_exception_counts_by_id(running_total_df, summed_diff)
 
     print(merged_df)
 

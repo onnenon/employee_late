@@ -17,7 +17,7 @@ def test_merge_exception_counts():
     )
 
     # Call the function with the example data
-    result = totals.merge_exception_counts_for_id(current_total_df, incoming_df)
+    result = totals.merge_exception_counts_by_id(current_total_df, incoming_df)
 
     # Define the expected result
     expected = pd.DataFrame(
@@ -28,7 +28,7 @@ def test_merge_exception_counts():
     assert_frame_equal(result, expected)
 
 
-def test_sum_exceptions_for_id():
+def test_sum_exceptions_by_id():
     # Create example data
     incoming_df = pd.DataFrame(
         {
@@ -39,7 +39,7 @@ def test_sum_exceptions_for_id():
     )
 
     # Call the function with the example data
-    result = totals.sum_exceptions_for_id(incoming_df, "late")
+    result = totals.sum_exceptions_by_id(incoming_df, "late")
 
     # Define the expected result
     expected = pd.DataFrame(
