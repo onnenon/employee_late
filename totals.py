@@ -87,7 +87,7 @@ def main():
     running_total_df = get_current_total_df()
 
     summed_diff = sum_exceptions_for_id(incoming_unfiltered_df, EXCEPTION_TO_COUNT)
-    merged_df = sum_exceptions_for_id(running_total_df, summed_diff)
+    merged_df = merge_exception_counts_for_id(running_total_df, summed_diff)
 
     print(merged_df)
 
