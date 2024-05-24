@@ -8,8 +8,14 @@ The repository contains the following:
 
 - `totals.py`: Python script containing the `sum_exceptions_for_id` function.
 - Test files for the `sum_exceptions_for_id` function.
+- `requirements.txt`: file containing all dependencies
 
 ## Running the Code
+
+Before running the code, first install all required dependencies:
+```bash
+pip install -r requirements.txt
+```
 
 To run the `totals.py` script, navigate to the directory containing the script and use the following command:
 
@@ -17,8 +23,8 @@ To run the `totals.py` script, navigate to the directory containing the script a
 python totals.py
 ```
 
-To run the tests for the `sum_exceptions_for_id` function navigate to the directory containing the script and use the following command:
+To run the tests use the following command:
 
 ```bash
-python test_totals.py
+pytest .
 ```
