@@ -19,7 +19,7 @@ class TestTotals(unittest.TestCase):
         )
 
         # Call the function with the example data
-        result = totals.sum_exceptions_for_id(current_total_df, incoming_df, "late")
+        result = totals.sum_exceptions_for_id(current_total_df, incoming_df)
 
         # Define the expected result
         expected = pd.DataFrame(

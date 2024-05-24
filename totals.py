@@ -1,7 +1,27 @@
 import pandas as pd
 
 
-def sum_exceptions_for_id(current_total_df, incoming_df, exception_to_count="late"):
+# Constants
+RUNNING_TOTAL_FILE_PATH = "data/totals.csv"
+IMCOMING_DATA_FILE_PATH = "data/incoming.csv"
+EXCEPTION_TO_COUNT = "late"
+
+def get_current_total_df():
+    """
+    Reads the running total file and returns a DataFrame.
+
+    If the file is not found, an empty DataFrame with columns ["id", "name", "count"] is returned.
+
+    Returns:
+        pandas.DataFrame: The DataFrame containing the running total data.
+    """
+    try:
+        return pd.read_csv(RUNNING_TOTAL_FILE_PATH)
+    except FileNotFoundError as e:
+        print(f"Running Total File not found: creating a new df")
+        return pd.DataFrame(columns=["id", "name", "count"])
+
+def sum_exceptions_for_id(current_total_df, incoming_df):
     """
     Sum the occurrences of a specific exception for each 'id' and 'name' in the incoming DataFrame,
     and merge the results with the current total DataFrame.
@@ -20,7 +40,7 @@ def sum_exceptions_for_id(current_total_df, incoming_df, exception_to_count="lat
     # This will give us a DataFrame with columns 'id', 'name', and 'count'
     # containing the number of occurrences of the exception for each 'id' and 'name'
     summed_incoming_df = (
-        incoming_df[incoming_df["exception"] == exception_to_count]
+        incoming_df[incoming_df["exception"] == EXCEPTION_TO_COUNT]
         .groupby(["id", "name"])
         .size()
         .reset_index(name="count")
@@ -32,22 +52,30 @@ def sum_exceptions_for_id(current_total_df, incoming_df, exception_to_count="lat
         .fillna(0)
         .assign(count=lambda df: df["count_x"] + df["count_y"])
         .drop(columns=["count_x", "count_y"])
-        .astype({"count": 'int64'}) # convert count from float to int
+        .astype({"count": "int64"})  # convert count from float to int
     )
 
 
 def main():
-    RUNNING_TOTAL_FILE_PATH = "data/totals.csv"
-    IMCOMING_DATA_FILE_PATH = "data/incoming.csv"
-    EXCEPTION_TO_COUNT = "late"
+    """
+    Main function to read data, process it and save the result.
+    """
+    try:
+        incoming_unfiltered_df = pd.read_csv(IMCOMING_DATA_FILE_PATH)
+    except FileNotFoundError as e:
+        print(f"Given file for incoming data not found: {e}")
+        return
+    
+    running_total_df = get_current_total_df()
 
-    running_total_df = pd.read_csv(RUNNING_TOTAL_FILE_PATH)
-    incoming_unfiltered_df = pd.read_csv(IMCOMING_DATA_FILE_PATH)
-    merged_df = sum_exceptions_for_id(running_total_df, incoming_unfiltered_df, EXCEPTION_TO_COUNT)
+    merged_df = sum_exceptions_for_id(running_total_df, incoming_unfiltered_df)
 
     print(merged_df)
 
-    merged_df.to_csv(RUNNING_TOTAL_FILE_PATH, index=False)
+    try:
+        merged_df.to_csv(RUNNING_TOTAL_FILE_PATH, index=False)
+    except Exception as e:
+        print(f"Error occurred while writing to running total file: {e}")
 
 
 if __name__ == "__main__":
