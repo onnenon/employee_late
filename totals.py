@@ -6,6 +6,7 @@ RUNNING_TOTAL_FILE_PATH = "data/totals.csv"
 IMCOMING_DATA_FILE_PATH = "data/incoming.csv"
 EXCEPTION_TO_COUNT = "late"
 
+
 def get_current_total_df():
     """
     Reads the running total file and returns a DataFrame.
@@ -20,6 +21,7 @@ def get_current_total_df():
     except FileNotFoundError as e:
         print(f"Running Total File not found: creating a new df")
         return pd.DataFrame(columns=["id", "name", "count"])
+
 
 def sum_exceptions_for_id(current_total_df, incoming_df):
     """
@@ -65,7 +67,7 @@ def main():
     except FileNotFoundError as e:
         print(f"Given file for incoming data not found: {e}")
         return
-    
+
     running_total_df = get_current_total_df()
 
     merged_df = sum_exceptions_for_id(running_total_df, incoming_unfiltered_df)
